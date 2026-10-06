@@ -58,7 +58,7 @@ Other content files:
 - `src/data/industries.ts` — industries served.
 - `src/pages/about.astro` — company story, principles and the `facts` list.
 - `src/pages/global-network.astro` — gateway and region descriptions.
-- `src/pages/privacy-policy.astro`, `src/pages/terms-and-conditions.astro` — legal templates. Replace `[Date to be confirmed]` and remove the "Draft for review" notice (in `src/layouts/LegalLayout.astro`) after legal review.
+- `src/pages/privacy-policy.astro`, `src/pages/terms-and-conditions.astro` — legal pages (approved 6 Oct 2026). Update the `updated` date whenever the text changes.
 
 ## Forms (email delivery, no backend)
 
@@ -117,10 +117,11 @@ Run `npm run build` and upload the contents of `dist/` to any static host.
 
 ## Pre-launch checklist
 
-- [ ] **Activate form delivery:** submit a test enquiry on the live site, then click the activation link in the email FormSubmit sends to `info@qualityshipping.in`. Submit a second test and confirm it arrives.
+- [x] Form delivery activated on FormSubmit (6 Oct 2026) — the next real submission is delivered to `info@qualityshipping.in`.
 - [ ] Approve the recreated vector logo (or request adjustments).
-- [ ] Legal review of Privacy Policy and Terms & Conditions; set the "Last updated" dates and remove the "Draft for review" notice.
+- [x] Privacy Policy and Terms & Conditions approved and dated.
 - [ ] Optionally add a WhatsApp number (`company.whatsapp`) and further registrations (GST, IATA…).
-- [ ] Add the DNS records above at the registrar, then enable **Enforce HTTPS** in GitHub Pages settings.
+- [x] DNS records added at GoDaddy (6 Oct 2026).
+- [ ] Enable **Enforce HTTPS** in GitHub Pages settings once GitHub has issued the certificate.
 - [ ] Verify the domain in Google Search Console and submit `https://www.qualityshipping.in/sitemap-index.xml`.
 - [ ] Set up analytics (if desired) and update the cookie section of the Privacy Policy accordingly.

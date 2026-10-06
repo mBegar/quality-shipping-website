@@ -19,10 +19,6 @@ const { title, description, updated } = Astro.props;
   </section>
   <section class="section--sm section">
     <div class="container container--narrow">
-      <div class="legal-notice">
-        <strong>Draft for review.</strong> This document is a template prepared for Quality Shipping Services Pvt. Ltd.
-        and should be reviewed by the company and its legal adviser before publication.
-      </div>
       <article class="prose legal-body">
         <slot />
       </article>
@@ -41,15 +37,6 @@ const { title, description, updated } = Astro.props;
     margin-top: 1rem;
     font-size: var(--text-sm);
     color: rgb(255 255 255 / 0.6);
-  }
-  .legal-notice {
-    padding: 1rem 1.25rem;
-    margin-bottom: 2.5rem;
-    border-radius: var(--radius-sm);
-    background: #fff7ed;
-    border: 1px solid #fdba74;
-    color: #7c2d12;
-    font-size: var(--text-sm);
   }
   .legal-body :global(h2:first-child) {
     margin-top: 0;
