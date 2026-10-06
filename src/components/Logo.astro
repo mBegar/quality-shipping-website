@@ -1,0 +1,73 @@
+---
+import { company } from '../data/site';
+
+interface Props {
+  variant?: 'light' | 'dark';
+  class?: string;
+  compact?: boolean;
+}
+const { variant = 'dark', class: className, compact = false } = Astro.props;
+---
+
+<a href="/" class:list={['logo', `logo--${variant}`, { 'logo--compact': compact }, className]} aria-label={`${company.name} — Home`}>
+  <img src="/images/logo-mark.svg" alt="" width="93" height="92" class="logo__mark" decoding="async" />
+  <span class="logo__text">
+    <span class="logo__name">Quality Shipping</span>
+    <span class="logo__sub">Services Pvt. Ltd.</span>
+  </span>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: inherit;
+    line-height: 1;
+  }
+  .logo:hover {
+    color: inherit;
+  }
+  .logo__mark {
+    width: 44px;
+    height: 44px;
+    flex: none;
+  }
+  .logo__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .logo__name {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.125rem;
+    letter-spacing: -0.02em;
+    color: var(--navy-800);
+    white-space: nowrap;
+  }
+  .logo__sub {
+    font-family: var(--font-display);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--teal-600);
+    white-space: nowrap;
+  }
+  .logo--light .logo__name {
+    color: #fff;
+  }
+  .logo--light .logo__sub {
+    color: var(--teal-400);
+  }
+  .logo--compact .logo__mark {
+    width: 40px;
+    height: 40px;
+  }
+  @media (max-width: 380px) {
+    .logo__name {
+      font-size: 1rem;
+    }
+  }
+</style>

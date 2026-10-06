@@ -1,0 +1,234 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { company, formattedAddress, nav, legalNav } from '../data/site';
+import { services } from '../data/services';
+
+const year = new Date().getFullYear();
+const socials = [
+  { key: 'linkedin', label: 'LinkedIn', href: company.social.linkedin, icon: 'linkedin' },
+  { key: 'facebook', label: 'Facebook', href: company.social.facebook, icon: 'facebook' },
+  { key: 'instagram', label: 'Instagram', href: company.social.instagram, icon: 'instagram' },
+  { key: 'x', label: 'X', href: company.social.x, icon: 'x-social' },
+].filter((s) => s.href);
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <Logo variant="light" />
+        <p class="site-footer__intro">
+          Quality Shipping Services is a freight forwarding company in India, coordinating ocean freight, air freight,
+          import and export logistics and project cargo for businesses engaged in international trade.
+        </p>
+        {
+          socials.length > 0 && (
+            <ul class="site-footer__social" aria-label="Social media">
+              {socials.map((s) => (
+                <li>
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+                    <Icon name={s.icon} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </div>
+
+      <nav class="site-footer__col" aria-label="Footer – Company">
+        <h3 class="site-footer__heading">Company</h3>
+        <ul>
+          {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+          <li><a href="/request-a-quote">Request a Quote</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Footer – Services">
+        <h3 class="site-footer__heading">Services</h3>
+        <ul>
+          {services.map((s) => <li><a href={`/services/${s.slug}`}>{s.title}</a></li>)}
+          <li><a href="/services">All Services</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-footer__col site-footer__contact">
+        <h3 class="site-footer__heading">Contact</h3>
+        <address>
+          <p class="site-footer__contact-row">
+            <Icon name="map-pin" />
+            <span>
+              <strong>{company.legalName}</strong><br />
+              {formattedAddress.map((line, i) => (<>{line}{i < formattedAddress.length - 1 && <br />}</>))}
+            </span>
+          </p>
+          <p class="site-footer__contact-row">
+            <Icon name="mail" />
+            <a href={`mailto:${company.email}`}>{company.email}</a>
+          </p>
+          {
+            company.phone ? (
+              <p class="site-footer__contact-row">
+                <Icon name="phone" />
+                <a href={`tel:${company.phone.replace(/\s+/g, '')}`}>{company.phone}</a>
+              </p>
+            ) : (
+              <p class="site-footer__contact-row site-footer__contact-row--muted">
+                <Icon name="phone" />
+                <span>Telephone number to be confirmed</span>
+              </p>
+            )
+          }
+        </address>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p>
+        © {year} {company.legalName} All rights reserved.
+        {company.registrations.map((r) => (<span class="site-footer__reg">{r.label}: {r.value}</span>))}
+      </p>
+      <ul class="site-footer__legal">
+        {legalNav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </div>
+    <p class="site-footer__credits">
+      Photography via <a href="https://unsplash.com/license" target="_blank" rel="noopener noreferrer">Unsplash</a>. World map outline adapted from{' '}
+      <a href="https://github.com/VictorCazanave/svg-maps" target="_blank" rel="noopener noreferrer">svg-maps</a> (CC BY 4.0).
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--navy-900);
+    color: rgb(255 255 255 / 0.72);
+    padding-top: clamp(3.5rem, 6vw, 5rem);
+    font-size: var(--text-sm);
+  }
+  .site-footer a {
+    color: rgb(255 255 255 / 0.78);
+  }
+  .site-footer a:hover {
+    color: #fff;
+  }
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1.2fr 1.4fr;
+    gap: 3rem 2.5rem;
+    padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  }
+  .site-footer__intro {
+    margin-top: 1.5rem;
+    max-width: 32rem;
+    line-height: 1.7;
+  }
+  .site-footer__social {
+    display: flex;
+    gap: 0.6rem;
+    list-style: none;
+    margin-top: 1.5rem;
+  }
+  .site-footer__social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-sm);
+    background: rgb(255 255 255 / 0.06);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    transition: background-color var(--dur) var(--ease-out);
+  }
+  .site-footer__social a:hover {
+    background: var(--teal-600);
+  }
+  .site-footer__social :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .site-footer__heading {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 1.25rem;
+  }
+  .site-footer__col ul {
+    list-style: none;
+    display: grid;
+    gap: 0.65rem;
+  }
+  address {
+    font-style: normal;
+  }
+  .site-footer__contact-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+  .site-footer__contact-row + .site-footer__contact-row {
+    margin-top: 1rem;
+  }
+  .site-footer__contact-row :global(svg) {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.25rem;
+    color: var(--teal-400);
+  }
+  .site-footer__contact-row strong {
+    color: #fff;
+    font-weight: 600;
+  }
+  .site-footer__contact-row--muted {
+    color: rgb(255 255 255 / 0.6);
+  }
+  .site-footer__reg {
+    display: inline-block;
+    margin-left: 0.75rem;
+    padding-left: 0.75rem;
+    border-left: 1px solid rgb(255 255 255 / 0.2);
+    color: rgb(255 255 255 / 0.6);
+  }
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem 2rem;
+    padding-block: 1.5rem;
+  }
+  .site-footer__legal {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+  .site-footer__credits {
+    padding-bottom: 1.5rem;
+    font-size: var(--text-xs);
+    color: rgb(255 255 255 / 0.58);
+  }
+  .site-footer__credits a {
+    color: rgb(255 255 255 / 0.7);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  @media (max-width: 1024px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .site-footer__brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 600px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

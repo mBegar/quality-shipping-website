@@ -1,0 +1,155 @@
+---
+import Icon from './Icon.astro';
+import WorldMap from './WorldMap.astro';
+import { seaportNames, airports, inlandDepots } from '../data/gateways';
+
+interface Props {
+  /** Show the "learn more" link to the Global Network page. */
+  linkToPage?: boolean;
+}
+const { linkToPage = true } = Astro.props;
+
+const groups = [
+  { icon: 'anchor', title: 'Sea Gateways', items: seaportNames },
+  { icon: 'plane', title: 'Air Gateways', items: airports.map((a) => a.name) },
+  { icon: 'warehouse', title: 'Inland Container Depots', items: inlandDepots },
+];
+---
+
+<section class="network bg-navy" aria-labelledby="network-title">
+  <div class="container">
+    <div class="network__grid">
+      <div class="network__copy reveal">
+        <p class="eyebrow">India Connectivity &amp; Global Trade</p>
+        <h2 id="network-title">Connecting Indian Businesses to Global Markets.</h2>
+        <p class="lead">
+          Freight forwarding coordination designed to help businesses move cargo across international supply chains with
+          confidence.
+        </p>
+
+        <div class="network__gateways">
+          {
+            groups.map((g) => (
+              <div>
+                <h3>
+                  <Icon name={g.icon} /> {g.title}
+                </h3>
+                <ul>
+                  {g.items.map((p) => (
+                    <li>{p}</li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+        <p class="network__note">
+          Listed locations are major Indian trade gateways through which shipments are commonly routed. They are not
+          company offices or facilities.
+        </p>
+        {
+          linkToPage && (
+            <a href="/global-network" class="text-link">
+              Explore our global network <Icon name="arrow-right" />
+            </a>
+          )
+        }
+      </div>
+      <div class="network__map reveal" style="--d:150ms">
+        <WorldMap />
+        <p class="network__caption">Indicative trade lanes from India to markets worldwide — illustrative only.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .network {
+    padding-block: var(--section-y);
+    background:
+      radial-gradient(60% 80% at 80% 20%, rgb(0 152 192 / 0.14), transparent 60%),
+      var(--navy-900);
+    overflow: hidden;
+  }
+  .network__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 3rem 4rem;
+    align-items: center;
+  }
+  .network__gateways {
+    display: grid;
+    gap: 1.4rem;
+    margin-top: 2.25rem;
+  }
+  .network__gateways h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal-300);
+    margin-bottom: 0.65rem;
+  }
+  .network__gateways h3 :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+  .network__gateways ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .network__gateways li {
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.14);
+    background: rgb(255 255 255 / 0.05);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: rgb(255 255 255 / 0.88);
+    white-space: nowrap;
+  }
+  .network__note {
+    margin-top: 1.75rem;
+    font-size: var(--text-xs);
+    color: rgb(255 255 255 / 0.62);
+    line-height: 1.6;
+  }
+  .network__copy .text-link {
+    margin-top: 1.5rem;
+  }
+  .network__map {
+    position: relative;
+  }
+  .network__caption {
+    margin-top: 1rem;
+    text-align: right;
+    font-size: var(--text-xs);
+    color: rgb(255 255 255 / 0.6);
+  }
+  @media (max-width: 1024px) {
+    .network__grid {
+      grid-template-columns: 1fr;
+    }
+    .network__map {
+      order: -1;
+    }
+    .network__caption {
+      text-align: left;
+    }
+  }
+  @media (max-width: 1024px) {
+    .network__gateways {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 720px) {
+    .network__gateways {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

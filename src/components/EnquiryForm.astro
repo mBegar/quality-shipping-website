@@ -1,0 +1,134 @@
+---
+import Icon from './Icon.astro';
+import FormStatus from './FormStatus.astro';
+import { company, FORM_ENDPOINT } from '../data/site';
+---
+
+<form class="enquiry-form" id="enquiry-form" novalidate data-form="enquiry" data-email={company.email} action={FORM_ENDPOINT} method="post">
+  <!-- Honeypot: hidden from people, bots that fill it are discarded by the mail relay. -->
+  <label class="hp" aria-hidden="true">Leave this field empty <input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label>
+  <fieldset class="form-section">
+    <legend>Your Details</legend>
+    <div class="form-grid">
+      <div class="field">
+        <label for="fullName">Full Name <span class="req" aria-hidden="true">*</span></label>
+        <input class="input" id="fullName" name="Full Name" type="text" autocomplete="name" required />
+      </div>
+      <div class="field">
+        <label for="companyName">Company Name <span class="req" aria-hidden="true">*</span></label>
+        <input class="input" id="companyName" name="Company Name" type="text" autocomplete="organization" required />
+      </div>
+      <div class="field">
+        <label for="email">Business Email <span class="req" aria-hidden="true">*</span></label>
+        <input class="input" id="email" name="Business Email" type="email" autocomplete="email" inputmode="email" required />
+      </div>
+      <div class="field">
+        <label for="phone">Phone Number <span class="req" aria-hidden="true">*</span></label>
+        <input class="input" id="phone" name="Phone Number" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91" required />
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="form-section">
+    <legend>Shipment Details</legend>
+    <div class="form-grid">
+      <div class="field span-2">
+        <span class="field-label" id="shipmentTypeLabel">Shipment Type <span class="req" aria-hidden="true">*</span></span>
+        <div class="radio-group" role="radiogroup" aria-labelledby="shipmentTypeLabel">
+          <label class="radio-pill"><input type="radio" name="Shipment Type" value="Import" required /><span>Import</span></label>
+          <label class="radio-pill"><input type="radio" name="Shipment Type" value="Export" /><span>Export</span></label>
+        </div>
+      </div>
+      <div class="field span-2">
+        <span class="field-label" id="freightModeLabel">Freight Mode <span class="req" aria-hidden="true">*</span></span>
+        <div class="radio-group" role="radiogroup" aria-labelledby="freightModeLabel">
+          <label class="radio-pill"><input type="radio" name="Freight Mode" value="Ocean FCL" required /><span>Ocean FCL</span></label>
+          <label class="radio-pill"><input type="radio" name="Freight Mode" value="Ocean LCL" /><span>Ocean LCL</span></label>
+          <label class="radio-pill"><input type="radio" name="Freight Mode" value="Air Freight" /><span>Air Freight</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="origin">Origin <span class="req" aria-hidden="true">*</span></label>
+        <input class="input" id="origin" name="Origin" type="text" placeholder="City, port or airport" required />
+      </div>
+      <div class="field">
+        <label for="destination">Destination <span class="req" aria-hidden="true">*</span></label>
+        <input class="input" id="destination" name="Destination" type="text" placeholder="City, port or airport" required />
+      </div>
+      <div class="field span-2">
+        <label for="cargo">Cargo Description <span class="req" aria-hidden="true">*</span></label>
+        <textarea class="textarea" id="cargo" name="Cargo Description" placeholder="Commodity, packaging, number of packages, any special handling needs" required></textarea>
+      </div>
+      <div class="field">
+        <label for="weight">Estimated Cargo Weight or Volume</label>
+        <input class="input" id="weight" name="Estimated Weight or Volume" type="text" placeholder="e.g. 8,500 kg / 24 CBM / 1 × 40' HC" />
+      </div>
+      <div class="field">
+        <label for="shipDate">Expected Shipping Date</label>
+        <input class="input" id="shipDate" name="Expected Shipping Date" type="date" />
+      </div>
+      <div class="field span-2">
+        <label for="notes">Additional Requirements</label>
+        <textarea class="textarea" id="notes" name="Additional Requirements" placeholder="Incoterms, documentation support, customs clearance, insurance, delivery requirements, etc."></textarea>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="form-footer">
+    <p class="form-note">
+      <Icon name="info" />
+      <span>
+        Fields marked <span class="req">*</span> are required. By submitting this enquiry you agree to our{' '}
+        <a href="/privacy-policy">Privacy Policy</a>. We use your details only to respond to your enquiry.
+      </span>
+    </p>
+    <button type="submit" class="btn btn--primary btn--lg">
+      <span class="btn__label">Submit Shipping Enquiry</span><span class="btn__busy">Sending…</span> <Icon name="arrow-right" class="arrow" />
+    </button>
+  </div>
+
+  <FormStatus id="enquiry-status" />
+</form>
+
+<style>
+  .hp {
+    display: none;
+  }
+  .form-section {
+    border: 0;
+    padding: 0;
+    margin: 0 0 2.25rem;
+    min-width: 0;
+  }
+  .form-section legend {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-lg);
+    color: var(--ink-900);
+    padding: 0;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+  .field-label {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--ink-900);
+  }
+  .field-label .req,
+  .form-note .req {
+    color: var(--teal-600);
+  }
+  .form-footer {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .form-footer .btn {
+    justify-self: start;
+  }
+</style>
+
+<script>
+  import { bindEnquiryForm } from '../scripts/forms';
+  bindEnquiryForm('#enquiry-form', '#enquiry-status', 'Shipping Enquiry');
+</script>

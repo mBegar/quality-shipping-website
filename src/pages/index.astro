@@ -1,0 +1,484 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import IndustryCard from '../components/IndustryCard.astro';
+import WhyUs from '../components/WhyUs.astro';
+import GlobalNetworkSection from '../components/GlobalNetworkSection.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { services } from '../data/services';
+import { industries } from '../data/industries';
+import { SITE_URL } from '../data/site';
+import heroPort from '../assets/photos/hero-port.jpg';
+import warehouseAisle from '../assets/photos/warehouse-aisle.jpg';
+import containersStack from '../assets/photos/containers-stack.jpg';
+
+const title = 'Quality Shipping Services | Freight Forwarder in India';
+const description =
+  'Freight forwarding company in Bengaluru, India — ocean freight (FCL & LCL), air freight, import-export logistics and project cargo for international trade.';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  schema={[
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      name: 'Quality Shipping Services',
+      url: SITE_URL,
+      inLanguage: 'en-IN',
+      publisher: { '@id': `${SITE_URL}/#organization` },
+    },
+  ]}
+>
+  <!-- ========================= HERO ========================= -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__media">
+      <Image
+        src={heroPort}
+        alt="Container ships berthed beneath gantry cranes at an international container terminal"
+        layout="full-width"
+        widths={[768, 1280, 1920, 2400]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        quality={80}
+      />
+    </div>
+    <svg class="hero__routes" viewBox="0 0 600 400" aria-hidden="true" preserveAspectRatio="xMaxYMid slice">
+      <g fill="none" stroke="#7fd3ec" stroke-width="1.2" stroke-linecap="round">
+        <path d="M60 300 Q 220 120 420 170" stroke-dasharray="4 7" />
+        <path d="M90 340 Q 330 90 560 120" stroke-dasharray="4 7" />
+        <path d="M200 360 Q 380 240 580 260" stroke-dasharray="4 7" />
+      </g>
+      <g fill="#7fd3ec">
+        <circle cx="60" cy="300" r="3" />
+        <circle cx="420" cy="170" r="3" />
+        <circle cx="90" cy="340" r="3" />
+        <circle cx="560" cy="120" r="3" />
+        <circle cx="200" cy="360" r="3" />
+        <circle cx="580" cy="260" r="3" />
+      </g>
+    </svg>
+
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <p class="eyebrow eyebrow--light hero__eyebrow">Freight Forwarder in India</p>
+        <h1 id="hero-title">Moving Your Business Forward. <span>Across Every Border.</span></h1>
+        <p class="hero__text">
+          Reliable freight forwarding solutions connecting Indian businesses to global markets through seamless ocean
+          freight, air freight, and end-to-end logistics coordination.
+        </p>
+        <div class="btn-group hero__actions">
+          <a href="/request-a-quote" class="btn btn--primary btn--lg">Request a Quote <Icon name="arrow-right" class="arrow" /></a>
+          <a href="/services" class="btn btn--outline-light btn--lg">Explore Our Services</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__strip">
+      <div class="container">
+        <ul class="hero__strip-list">
+          {
+            services.map((s) => (
+              <li>
+                <a href={`/services/${s.slug}`}>
+                  <Icon name={s.icon} />
+                  <span>{s.shortTitle}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= INTRO ========================= -->
+  <section class="section intro" aria-labelledby="intro-title">
+    <div class="container intro__grid">
+      <div class="intro__copy reveal">
+        <p class="eyebrow">About Quality Shipping Services</p>
+        <h2 id="intro-title">Your Trusted Partner in Global Logistics</h2>
+        <p class="lead">
+          Quality Shipping Services is an India-based freight forwarding partner focused on dependable logistics
+          coordination, transparent communication and operational efficiency.
+        </p>
+        <p>
+          We work with importers, exporters, manufacturers and traders to plan and coordinate international shipments —
+          selecting suitable ocean and air freight options, assisting with documentation and keeping every stakeholder
+          informed from booking to delivery. Each solution is tailored to the cargo, the route and the commercial
+          priorities of your business.
+        </p>
+        <ul class="intro__points">
+          <li><Icon name="check" /> Tailored ocean and air freight solutions</li>
+          <li><Icon name="check" /> Documentation and customs clearance coordination</li>
+          <li><Icon name="check" /> Clear milestone communication throughout</li>
+        </ul>
+        <a href="/about" class="btn btn--navy">Discover Our Company <Icon name="arrow-right" class="arrow" /></a>
+      </div>
+      <div class="intro__media reveal" style="--d:120ms">
+        <Image
+          src={warehouseAisle}
+          alt="Tall racking aisle inside a modern logistics warehouse"
+          widths={[480, 800, 1100]}
+          sizes="(min-width: 1024px) 45vw, 92vw"
+          quality={76}
+          class="intro__img intro__img--main"
+        />
+        <Image
+          src={containersStack}
+          alt="Stacked shipping containers in a container yard"
+          widths={[320, 480, 640]}
+          sizes="(min-width: 1024px) 20vw, 40vw"
+          quality={72}
+          class="intro__img intro__img--inset"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= SERVICES ========================= -->
+  <section class="section bg-surface" aria-labelledby="services-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Core Services"
+        title="Freight Forwarding Services Built Around Your Cargo"
+        lead="From full-container ocean freight to time-critical air cargo, we coordinate the services international trade depends on."
+        align="split"
+      >
+        <a href="/services" class="text-link">View all services <Icon name="arrow-right" /></a>
+      </SectionHead>
+      <div class="grid grid--4">
+        {services.map((s, i) => <ServiceCard service={s} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= WHY US ========================= -->
+  <section class="section" aria-labelledby="why-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Why Choose Quality Shipping Services?"
+        title="A Freight Partner Focused on Getting the Details Right"
+        lead="International shipping succeeds on coordination, communication and care. These are the principles our service is built on."
+        align="center"
+      />
+      <WhyUs />
+    </div>
+  </section>
+
+  <!-- ========================= INDUSTRIES ========================= -->
+  <section class="section bg-surface industries-strip" aria-labelledby="industries-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Industries We Serve"
+        title="Logistics Support Across Trading Sectors"
+        lead="We coordinate shipments for businesses across manufacturing, engineering, automotive, consumer and retail supply chains."
+        align="split"
+      >
+        <a href="/industries" class="text-link">All industries <Icon name="arrow-right" /></a>
+      </SectionHead>
+    </div>
+    <div class="industries-strip__scroller">
+      <div class="industries-strip__track">
+        {industries.map((ind, i) => <IndustryCard industry={ind} index={i} compact />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= GLOBAL NETWORK ========================= -->
+  <GlobalNetworkSection />
+
+  <!-- ========================= PROCESS ========================= -->
+  <section class="section bg-surface" aria-labelledby="process-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="A Simple Shipping Journey"
+        title="From Enquiry to Delivery in Four Clear Steps"
+        lead="Working with us is straightforward. Share what you need to move, and our team coordinates the rest."
+        align="center"
+      />
+      <ProcessSteps />
+    </div>
+  </section>
+
+  <!-- ========================= CTA ========================= -->
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: min(88vh, 860px);
+    color: #fff;
+    overflow: hidden;
+  }
+  .hero__media,
+  .hero__media :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% center;
+    z-index: -3;
+  }
+  .hero__media :global(img) {
+    animation: hero-zoom 14s ease-out forwards;
+    transform-origin: center;
+  }
+  @keyframes hero-zoom {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+      linear-gradient(90deg, rgb(4 20 34 / 0.9) 0%, rgb(4 20 34 / 0.72) 40%, rgb(4 20 34 / 0.28) 75%, rgb(4 20 34 / 0.15) 100%),
+      linear-gradient(0deg, rgb(4 20 34 / 0.75) 0%, transparent 45%);
+  }
+  .hero__routes {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: min(60vw, 820px);
+    height: 100%;
+    z-index: -1;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .hero__inner {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-block: clamp(5rem, 10vw, 8rem) clamp(3rem, 6vw, 5rem);
+  }
+  .hero__content {
+    max-width: 44rem;
+  }
+  .hero__eyebrow {
+    animation: hero-in 800ms var(--ease-out) both;
+  }
+  .hero h1 {
+    color: #fff;
+    animation: hero-in 800ms var(--ease-out) 100ms both;
+  }
+  .hero h1 span {
+    color: var(--teal-300);
+  }
+  .hero__text {
+    margin-top: 1.5rem;
+    max-width: 36rem;
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: rgb(255 255 255 / 0.84);
+    animation: hero-in 800ms var(--ease-out) 200ms both;
+  }
+  .hero__actions {
+    margin-top: 2.25rem;
+    animation: hero-in 800ms var(--ease-out) 300ms both;
+  }
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .hero__strip {
+    background: rgb(4 20 34 / 0.55);
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .hero__strip-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .hero__strip-list li + li {
+    border-left: 1px solid rgb(255 255 255 / 0.1);
+  }
+  .hero__strip-list a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.15rem 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: rgb(255 255 255 / 0.88);
+    transition: background-color var(--dur) var(--ease-out);
+  }
+  .hero__strip-list a:hover {
+    background: rgb(255 255 255 / 0.06);
+    color: #fff;
+  }
+  .hero__strip-list :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--teal-300);
+    flex: none;
+  }
+  @media (max-width: 960px) {
+    .hero__strip-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .hero__strip-list li:nth-child(3) {
+      border-left: 0;
+    }
+    .hero__strip-list li:nth-child(n + 3) {
+      border-top: 1px solid rgb(255 255 255 / 0.1);
+    }
+    .hero__routes {
+      width: 100vw;
+      opacity: 0.25;
+    }
+  }
+  @media (max-width: 540px) {
+    .hero {
+      min-height: auto;
+    }
+    .hero__strip-list {
+      grid-template-columns: 1fr;
+    }
+    .hero__strip-list li {
+      border-left: 0 !important;
+    }
+    .hero__strip-list li + li {
+      border-top: 1px solid rgb(255 255 255 / 0.1);
+    }
+    .hero__strip-list a {
+      padding-block: 0.85rem;
+    }
+  }
+
+  /* Intro */
+  .intro__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 3rem 5rem;
+    align-items: center;
+  }
+  .intro__copy .lead {
+    margin: 1.25rem 0 1.25rem;
+  }
+  .intro__copy > p:not(.lead):not(.eyebrow) {
+    color: var(--ink-600);
+  }
+  .intro__points {
+    list-style: none;
+    display: grid;
+    gap: 0.7rem;
+    margin: 1.75rem 0 2.25rem;
+  }
+  .intro__points li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    color: var(--ink-900);
+  }
+  .intro__points :global(svg) {
+    width: 1.35rem;
+    height: 1.35rem;
+    padding: 0.2rem;
+    border-radius: 50%;
+    background: var(--teal-50);
+    color: var(--teal-600);
+    flex: none;
+  }
+  .intro__media {
+    position: relative;
+    padding-bottom: 3.5rem;
+    padding-right: 3.5rem;
+  }
+  .intro__media :global(.intro__img) {
+    border-radius: var(--radius);
+    object-fit: cover;
+  }
+  .intro__media :global(.intro__img--main) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    max-height: 36rem;
+    box-shadow: var(--shadow-lg);
+  }
+  .intro__media :global(.intro__img--inset) {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 48%;
+    aspect-ratio: 4 / 3;
+    border: 6px solid #fff;
+    box-shadow: var(--shadow-lg);
+  }
+  .intro__media::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: -1.5rem;
+    width: 9rem;
+    height: 9rem;
+    border-radius: var(--radius);
+    background:
+      radial-gradient(circle, var(--teal-500) 1.2px, transparent 1.4px) 0 0 / 12px 12px;
+    opacity: 0.35;
+    z-index: -1;
+  }
+  @media (max-width: 1024px) {
+    .intro__grid {
+      grid-template-columns: 1fr;
+    }
+    .intro__media {
+      max-width: 34rem;
+    }
+  }
+
+  /* Industries horizontal strip */
+  .industries-strip__scroller {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+    padding-bottom: 1rem;
+  }
+  .industries-strip__track {
+    --edge: max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter)));
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(18rem, 20rem);
+    gap: 1.25rem;
+    /* align the first card with the page container; let the last card breathe */
+    padding-inline: var(--edge);
+    scroll-padding-inline: var(--edge);
+    width: max-content;
+    min-width: 100%;
+  }
+  .industries-strip__scroller {
+    scroll-padding-inline: max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter)));
+  }
+  .industries-strip__track > :global(*) {
+    scroll-snap-align: start;
+  }
+</style>

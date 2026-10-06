@@ -1,0 +1,376 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import SectionHead from '../components/SectionHead.astro';
+import WhyUs from '../components/WhyUs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { services } from '../data/services';
+import { company, SITE_URL } from '../data/site';
+import teamMeeting from '../assets/photos/team-meeting.jpg';
+import handshake from '../assets/photos/handshake.jpg';
+import portAerial from '../assets/photos/port-aerial.jpg';
+
+const title = 'About Us — Freight Forwarder in Bengaluru';
+const description =
+  'Quality Shipping Services is a Bengaluru-based freight forwarding company (est. 2017) offering dependable ocean and air freight coordination for Indian trade.';
+const crumbs = [{ label: 'About Us' }];
+
+const principles = [
+  {
+    icon: 'target',
+    title: 'Precision in Coordination',
+    text: 'International shipments involve many moving parts. We plan carefully, confirm details and manage handovers so that cargo moves as intended.',
+  },
+  {
+    icon: 'eye',
+    title: 'Transparency at Every Stage',
+    text: 'You should never have to wonder where your shipment stands. We communicate proactively — including when something changes.',
+  },
+  {
+    icon: 'shield-check',
+    title: 'Dependability Over Promises',
+    text: 'We commit to what we can deliver and work to deliver it consistently, shipment after shipment.',
+  },
+  {
+    icon: 'handshake',
+    title: 'Partnership Mindset',
+    text: 'We aim to understand your business, not just your booking — so that our solutions improve as the relationship grows.',
+  },
+];
+
+// Company facts (empty values are hidden).
+const facts: { label: string; value: string; wide?: boolean }[] = [
+  { label: 'Established', value: company.foundingYear },
+  { label: 'Headquarters', value: `${company.address.city}, India` },
+  ...company.registrations,
+  { label: 'Customers served', value: 'Importers, exporters, manufacturers and traders' },
+  { label: 'Core services', value: 'Ocean freight · Air freight · Import & export logistics · Project cargo', wide: true },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  crumbs={crumbs}
+  schema={[
+    {
+      '@type': 'AboutPage',
+      name: 'About Quality Shipping Services',
+      url: `${SITE_URL}/about`,
+    },
+  ]}
+>
+  <PageBanner
+    eyebrow="About Us"
+    title="A Freight Forwarding Partner Built on Reliability"
+    lead="Quality Shipping Services helps Indian businesses move cargo across borders with careful coordination, clear communication and solutions shaped around each shipment."
+    image={portAerial}
+    alt="Aerial view of a container terminal with cranes, containers and vessels"
+    crumbs={crumbs}
+  />
+
+  <!-- Overview -->
+  <section class="section overview">
+    <div class="container overview__grid">
+      <div class="overview__copy reveal">
+        <p class="eyebrow">Company Overview</p>
+        <h2>Who We Are</h2>
+        <div class="prose">
+          <p>
+            Quality Shipping Services Pvt. Ltd. is a freight forwarding company based in {company.address.city}, India. We
+            coordinate international shipments for importers, exporters, manufacturers and trading businesses — planning
+            the most suitable routing, arranging ocean and air freight with carriers and service partners, assisting with
+            documentation and keeping our customers informed from booking to delivery.
+          </p>
+          <p>
+            As a freight forwarder, our role is to act as the single coordinating point between your business and the
+            many parties involved in moving cargo internationally: shipping lines, airlines, port and airport operators,
+            customs brokers and transport providers. We bring these pieces together into one dependable service.
+          </p>
+          <p>
+            Our approach is practical and customer-focused. Each shipment is reviewed on its own terms — cargo, route,
+            urgency and budget — and matched with an appropriate solution, rather than forced into a standard product.
+          </p>
+        </div>
+
+        <dl class="facts">
+          {
+            facts
+              .filter((f) => f.value)
+              .map((f) => (
+                <div class:list={{ 'facts__wide': f.wide }}>
+                  <dt>{f.label}</dt>
+                  <dd>{f.value}</dd>
+                </div>
+              ))
+          }
+        </dl>
+      </div>
+      <div class="overview__media reveal" style="--d:120ms">
+        <Image src={teamMeeting} alt="Logistics team reviewing shipment plans together in a meeting" widths={[480, 800, 1100]} sizes="(min-width: 1024px) 45vw, 92vw" quality={76} class="overview__img" />
+        <div class="overview__quote">
+          <Icon name="badge-check" />
+          <p>“Our job is to make international shipping feel straightforward for the businesses we serve.”</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy -->
+  <section class="section bg-navy philosophy">
+    <div class="container">
+      <SectionHead
+        eyebrow="Our Service Philosophy"
+        title="How We Work"
+        lead="Four principles guide every shipment we coordinate."
+        align="center"
+      />
+      <ul class="principles">
+        {
+          principles.map((p, i) => (
+            <li class="principle reveal" style={`--d:${i * 80}ms`}>
+              <span class="icon-badge icon-badge--dark"><Icon name={p.icon} /></span>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Capabilities -->
+  <section class="section capabilities">
+    <div class="container capabilities__grid">
+      <div class="capabilities__media reveal">
+        <Image src={handshake} alt="Two business partners shaking hands in agreement" widths={[480, 800, 1100]} sizes="(min-width: 1024px) 42vw, 92vw" quality={74} class="capabilities__img" />
+      </div>
+      <div class="reveal" style="--d:120ms">
+        <p class="eyebrow">Operational Capabilities</p>
+        <h2>What We Coordinate</h2>
+        <p class="lead">A focused set of freight forwarding services, delivered with care.</p>
+        <ul class="capabilities__list">
+          {
+            services.map((s) => (
+              <li>
+                <a href={`/services/${s.slug}`}>
+                  <span class="icon-badge"><Icon name={s.icon} /></span>
+                  <span>
+                    <strong>{s.title}</strong>
+                    <span>{s.summary}</span>
+                  </span>
+                  <Icon name="arrow-right" class="capabilities__arrow" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="section bg-surface">
+    <div class="container">
+      <SectionHead
+        eyebrow="Our Values"
+        title="Why Businesses Work With Us"
+        lead="The qualities our customers can expect from Quality Shipping Services on every shipment."
+        align="center"
+      />
+      <WhyUs />
+    </div>
+  </section>
+
+  <CtaBand title="Looking for a Dependable Freight Partner?" text="Speak to our team about your import, export or project cargo requirements." />
+</BaseLayout>
+
+<style>
+  .overview__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: 3rem 5rem;
+    align-items: start;
+  }
+  .overview__copy .prose {
+    margin-top: 1.5rem;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem 2rem;
+    margin: 2.25rem 0 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+  .facts__wide {
+    grid-column: 1 / -1;
+  }
+  .facts dt {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal-600);
+  }
+  .facts dd {
+    margin: 0.35rem 0 0;
+    font-weight: 600;
+    color: var(--ink-900);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+  .overview__media {
+    position: relative;
+    padding-bottom: 3rem;
+  }
+  .overview__media :global(.overview__img) {
+    width: 100%;
+    aspect-ratio: 4 / 4.6;
+    object-fit: cover;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+  }
+  .overview__quote {
+    position: absolute;
+    left: -2rem;
+    bottom: 0;
+    max-width: 22rem;
+    padding: 1.5rem 1.6rem;
+    background: var(--navy-800);
+    color: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+  }
+  .overview__quote :global(svg) {
+    width: 1.6rem;
+    height: 1.6rem;
+    color: var(--teal-400);
+    margin-bottom: 0.75rem;
+  }
+  .overview__quote p {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-base);
+    line-height: 1.5;
+  }
+  .principles {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .principle {
+    padding: 1.75rem;
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 0.04);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    transition: background-color var(--dur) var(--ease-out);
+  }
+  .principle:hover {
+    background: rgb(255 255 255 / 0.07);
+  }
+  .principle h3 {
+    margin-top: 1.25rem;
+    font-size: var(--text-lg);
+  }
+  .principle p {
+    margin-top: 0.6rem;
+    font-size: var(--text-sm);
+    line-height: 1.65;
+    color: rgb(255 255 255 / 0.72);
+  }
+  .capabilities__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 3rem 5rem;
+    align-items: center;
+  }
+  .capabilities__media :global(.capabilities__img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+  }
+  .capabilities .lead {
+    margin: 1rem 0 1.75rem;
+  }
+  .capabilities__list {
+    list-style: none;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .capabilities__list a {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: inherit;
+    transition:
+      border-color var(--dur) var(--ease-out),
+      background-color var(--dur) var(--ease-out),
+      transform var(--dur) var(--ease-out);
+  }
+  .capabilities__list a:hover {
+    border-color: var(--teal-300);
+    background: var(--teal-50);
+    transform: translateX(4px);
+  }
+  .capabilities__list strong {
+    display: block;
+    font-family: var(--font-display);
+    color: var(--ink-900);
+  }
+  .capabilities__list strong + span {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: var(--text-sm);
+    color: var(--ink-600);
+  }
+  .capabilities__list :global(.capabilities__arrow) {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--teal-600);
+  }
+  @media (max-width: 1024px) {
+    .overview__grid,
+    .capabilities__grid {
+      grid-template-columns: 1fr;
+    }
+    .overview__media {
+      max-width: 34rem;
+    }
+    .overview__quote {
+      left: 1rem;
+    }
+    .capabilities__media {
+      order: 2;
+      max-width: 34rem;
+    }
+    .principles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 600px) {
+    .principles {
+      grid-template-columns: 1fr;
+    }
+    .facts {
+      grid-template-columns: 1fr;
+    }
+    .overview__quote {
+      position: static;
+      margin-top: 1rem;
+      max-width: none;
+    }
+    .overview__media {
+      padding-bottom: 0;
+    }
+  }
+</style>

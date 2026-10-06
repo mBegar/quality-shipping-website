@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import EnquiryForm from '../components/EnquiryForm.astro';
+import Icon from '../components/Icon.astro';
+import { company, formattedAddress } from '../data/site';
+import containersStack from '../assets/photos/containers-stack.jpg';
+
+const title = 'Request a Freight Quote';
+const description =
+  'Get a freight forwarding quote from India. Share your ocean FCL, LCL or air freight shipment details and our team will respond with a tailored proposal.';
+const crumbs = [{ label: 'Request a Quote' }];
+
+const expectations = [
+  { icon: 'file-check', title: 'A review of your requirements', text: 'We assess cargo, route, mode and timeline before proposing a solution.' },
+  { icon: 'route', title: 'A suitable routing proposal', text: 'Service options matched to your cargo type, urgency and budget priorities.' },
+  { icon: 'message-circle', title: 'A clear point of contact', text: 'Your enquiry is handled by a team member who stays with you through the shipment.' },
+];
+---
+
+<BaseLayout title={title} description={description} crumbs={crumbs}>
+  <PageBanner
+    eyebrow="Request a Quote"
+    title="Tell Us About Your Shipment"
+    lead="Share your cargo, route and timing, and our team will come back to you with a freight forwarding proposal tailored to your requirements."
+    image={containersStack}
+    alt="Rows of stacked shipping containers at a container yard"
+    crumbs={crumbs}
+  />
+
+  <section class="section quote">
+    <div class="container quote__grid">
+      <div class="quote__form reveal">
+        <EnquiryForm />
+      </div>
+
+      <aside class="quote__aside">
+        <div class="aside-card reveal" style="--d:100ms">
+          <h2>What to Expect</h2>
+          <ul class="aside-card__list">
+            {
+              expectations.map((e) => (
+                <li>
+                  <span class="icon-badge"><Icon name={e.icon} /></span>
+                  <div>
+                    <h3>{e.title}</h3>
+                    <p>{e.text}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="aside-card aside-card--navy reveal" style="--d:180ms">
+          <h2>Prefer to Email?</h2>
+          <p>Send your shipment details directly to our team and we will respond with a proposal.</p>
+          <a href={`mailto:${company.email}`} class="aside-card__contact"><Icon name="mail" /> {company.email}</a>
+          {
+            company.phone && (
+              <a href={`tel:${company.phone.replace(/\s+/g, '')}`} class="aside-card__contact">
+                <Icon name="phone" /> {company.phone}
+              </a>
+            )
+          }
+          <p class="aside-card__address">
+            <Icon name="map-pin" />
+            <span>{formattedAddress.join(', ')}</span>
+          </p>
+        </div>
+
+        <div class="aside-card aside-card--tip reveal" style="--d:260ms">
+          <h2>Helpful Details to Include</h2>
+          <ul class="check-list">
+            <li>Commodity and HS code, if known</li>
+            <li>Dimensions, gross weight and packaging</li>
+            <li>Incoterms (e.g. FOB, CIF, EXW)</li>
+            <li>Pickup / delivery addresses, if required</li>
+            <li>Any hazardous, temperature or special handling needs</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .quote__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: 3rem 4rem;
+    align-items: start;
+  }
+  .quote__aside {
+    display: grid;
+    gap: 1.5rem;
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+  .aside-card {
+    padding: 1.75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface-0);
+    box-shadow: var(--shadow-sm);
+  }
+  .aside-card h2 {
+    font-size: var(--text-xl);
+    margin-bottom: 1.1rem;
+  }
+  .aside-card__list {
+    list-style: none;
+    display: grid;
+    gap: 1.25rem;
+  }
+  .aside-card__list li {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+  }
+  .aside-card__list h3 {
+    font-size: var(--text-base);
+  }
+  .aside-card__list p {
+    margin-top: 0.3rem;
+    font-size: var(--text-sm);
+    color: var(--ink-600);
+  }
+  .aside-card--navy {
+    background: var(--navy-800);
+    border-color: var(--navy-800);
+    color: rgb(255 255 255 / 0.8);
+  }
+  .aside-card--navy h2 {
+    color: #fff;
+  }
+  .aside-card--navy > p {
+    font-size: var(--text-sm);
+  }
+  .aside-card__contact {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: #fff;
+    word-break: break-all;
+  }
+  .aside-card__contact:hover {
+    color: var(--teal-300);
+  }
+  .aside-card__contact :global(svg),
+  .aside-card__address :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex: none;
+    color: var(--teal-400);
+  }
+  .aside-card__address {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    font-size: var(--text-sm);
+  }
+  .aside-card__address :global(svg) {
+    margin-top: 0.2rem;
+  }
+  .aside-card--tip {
+    background: var(--surface-1);
+  }
+  .aside-card--tip .check-list li {
+    font-size: var(--text-sm);
+  }
+  @media (max-width: 1024px) {
+    .quote__grid {
+      grid-template-columns: 1fr;
+    }
+    .quote__aside {
+      position: static;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    }
+  }
+</style>

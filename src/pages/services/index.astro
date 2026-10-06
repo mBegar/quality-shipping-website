@@ -1,0 +1,197 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import ProcessSteps from '../../components/ProcessSteps.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { services } from '../../data/services';
+import { SITE_URL } from '../../data/site';
+import warehousePallets from '../../assets/photos/warehouse-pallets.jpg';
+
+const title = 'Freight Forwarding Services in India';
+const description =
+  'Ocean freight (FCL & LCL), air freight, import-export logistics coordination and project cargo — freight forwarding services from India by Quality Shipping.';
+const crumbs = [{ label: 'Services' }];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  crumbs={crumbs}
+  schema={[
+    {
+      '@type': 'ItemList',
+      name: 'Freight Forwarding Services',
+      itemListElement: services.map((s, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: s.title,
+        url: `${SITE_URL}/services/${s.slug}`,
+      })),
+    },
+  ]}
+>
+  <PageBanner
+    eyebrow="Our Services"
+    title="International Freight Forwarding Services"
+    lead="Ocean freight, air freight, import and export coordination and project cargo — coordinated by one team, built around your cargo."
+    image={warehousePallets}
+    alt="Palletised cargo arranged inside a logistics distribution warehouse"
+    crumbs={crumbs}
+  />
+
+  <!-- Jump links -->
+  <nav class="jump" aria-label="Services on this page">
+    <div class="container jump__inner">
+      {
+        services.map((s) => (
+          <a href={`#${s.slug}`} class="jump__link">
+            <Icon name={s.icon} /> {s.shortTitle}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
+
+  <!-- Service blocks -->
+  {
+    services.map((s, i) => (
+      <section id={s.slug} class:list={['section service-block', { 'bg-surface': i % 2 === 1 }]} aria-labelledby={`${s.slug}-title`}>
+        <div class:list={['container service-block__grid', { 'service-block__grid--flip': i % 2 === 1 }]}>
+          <div class="service-block__media reveal">
+            <Image src={s.detail} alt={s.detailAlt} widths={[480, 800, 1100]} sizes="(min-width: 1024px) 46vw, 92vw" quality={76} class="service-block__img" />
+            <span class="service-block__badge">
+              <Icon name={s.icon} />
+            </span>
+          </div>
+          <div class="service-block__copy reveal" style="--d:120ms">
+            <p class="eyebrow">{s.eyebrow}</p>
+            <h2 id={`${s.slug}-title`}>{s.title}</h2>
+            <p class="lead">{s.summary}</p>
+            <ul class="check-list">
+              {s.highlights.map((h) => <li>{h}</li>)}
+            </ul>
+            <div class="btn-group">
+              <a href={`/services/${s.slug}`} class="btn btn--navy">Service Details <Icon name="arrow-right" class="arrow" /></a>
+              <a href="/request-a-quote" class="btn btn--outline">Request a Quote</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section">
+    <div class="container">
+      <SectionHead
+        eyebrow="How It Works"
+        title="A Simple Shipping Journey"
+        lead="From enquiry to delivery, working with us follows four clear steps."
+        align="center"
+      />
+      <ProcessSteps />
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .jump {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 20;
+    background: rgb(255 255 255 / 0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .jump__inner {
+    display: flex;
+    gap: 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .jump__inner::-webkit-scrollbar {
+    display: none;
+  }
+  .jump__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1rem;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--ink-600);
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+  }
+  .jump__link:hover {
+    color: var(--navy-800);
+    border-bottom-color: var(--teal-500);
+  }
+  .jump__link :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--teal-600);
+  }
+  .service-block__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 3rem 5rem;
+    align-items: center;
+  }
+  .service-block__grid--flip .service-block__media {
+    order: 2;
+  }
+  .service-block__media {
+    position: relative;
+  }
+  .service-block__media :global(.service-block__img) {
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    object-fit: cover;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+  }
+  .service-block__badge {
+    position: absolute;
+    right: -1rem;
+    bottom: -1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--radius);
+    background: var(--teal-600);
+    color: #fff;
+    box-shadow: var(--shadow-lg);
+  }
+  .service-block__badge :global(svg) {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+  .service-block__copy .lead {
+    margin: 1rem 0 1.5rem;
+  }
+  .service-block__copy .check-list {
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 1024px) {
+    .service-block__grid {
+      grid-template-columns: 1fr;
+    }
+    .service-block__grid--flip .service-block__media {
+      order: 0;
+    }
+    .service-block__media {
+      max-width: 36rem;
+    }
+    .service-block__badge {
+      right: 1rem;
+    }
+  }
+</style>

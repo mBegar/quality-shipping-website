@@ -1,0 +1,149 @@
+---
+import Icon from './Icon.astro';
+
+const steps = [
+  {
+    icon: 'file-text',
+    title: 'Share Your Requirements',
+    text: 'Tell us about your cargo, origin, destination and preferred timeline.',
+  },
+  {
+    icon: 'file-check',
+    title: 'Receive a Shipping Proposal',
+    text: 'Our team reviews your requirements and provides a suitable proposal.',
+  },
+  {
+    icon: 'route',
+    title: 'Coordinate Your Shipment',
+    text: 'We assist with the agreed freight forwarding and documentation processes.',
+  },
+  {
+    icon: 'bell-ring',
+    title: 'Stay Informed',
+    text: 'Receive shipment updates and communication from our team.',
+  },
+];
+---
+
+<ol class="steps">
+  {
+    steps.map((step, i) => (
+      <li class="step reveal" style={`--d:${i * 90}ms`}>
+        <div class="step__marker">
+          <span class="step__num">{String(i + 1).padStart(2, '0')}</span>
+          <span class="step__icon"><Icon name={step.icon} /></span>
+        </div>
+        <h3>{step.title}</h3>
+        <p>{step.text}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steps {
+    position: relative;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem;
+    counter-reset: step;
+  }
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 2rem;
+    left: calc(12.5% + 2rem);
+    right: calc(12.5% + 2rem);
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--line-strong) 0 8px, transparent 8px 16px);
+  }
+  .step {
+    position: relative;
+    text-align: center;
+    padding-inline: 0.5rem;
+  }
+  .step__marker {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--teal-500);
+    color: var(--teal-600);
+    margin-bottom: 1.4rem;
+    box-shadow: 0 0 0 8px var(--surface-1);
+  }
+  .step__icon :global(svg) {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+  .step__num {
+    position: absolute;
+    top: -0.6rem;
+    right: -0.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    height: 1.75rem;
+    padding-inline: 0.4rem;
+    border-radius: var(--radius-pill);
+    background: var(--navy-800);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+  .step h3 {
+    font-size: var(--text-lg);
+  }
+  .step p {
+    margin-top: 0.6rem;
+    font-size: var(--text-sm);
+    color: var(--ink-600);
+    line-height: 1.6;
+  }
+  @media (max-width: 960px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.5rem 2rem;
+    }
+    .steps::before {
+      display: none;
+    }
+  }
+  @media (max-width: 540px) {
+    .steps {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 4rem 1fr;
+      column-gap: 1.25rem;
+      text-align: left;
+      padding: 0 0 2rem;
+    }
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: calc(2rem - 1px);
+      top: 4.5rem;
+      bottom: 0.5rem;
+      width: 2px;
+      background: repeating-linear-gradient(180deg, var(--line-strong) 0 8px, transparent 8px 16px);
+    }
+    .step__marker {
+      grid-row: 1 / span 2;
+      margin-bottom: 0;
+    }
+    .step p {
+      grid-column: 2;
+    }
+  }
+</style>

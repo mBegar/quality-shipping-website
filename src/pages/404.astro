@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { nav } from '../data/site';
+---
+
+<BaseLayout title="Page Not Found" description="The page you were looking for could not be found." noindex>
+  <section class="section not-found">
+    <div class="container container--narrow">
+      <p class="eyebrow">Error 404</p>
+      <h1>We couldn't find that page.</h1>
+      <p class="lead">The page may have moved or the address may have been typed incorrectly. Try one of the links below.</p>
+      <ul class="not-found__links">
+        {nav.map((item) => <li><a href={item.href} class="btn btn--outline">{item.label}</a></li>)}
+        <li><a href="/request-a-quote" class="btn btn--primary">Request a Quote <Icon name="arrow-right" class="arrow" /></a></li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+  .not-found h1 {
+    font-size: var(--text-4xl);
+  }
+  .not-found .lead {
+    margin: 1.25rem 0 2rem;
+  }
+  .not-found__links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

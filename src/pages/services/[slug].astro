@@ -1,0 +1,295 @@
+---
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { services } from '../../data/services';
+import { SITE_URL } from '../../data/site';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { service: s } }));
+}
+
+const { service } = Astro.props;
+const others = services.filter((s) => s.slug !== service.slug);
+const crumbs = [{ label: 'Services', href: '/services' }, { label: service.shortTitle }];
+const pageUrl = `${SITE_URL}/services/${service.slug}`;
+
+// Page-specific social-sharing image generated from the service hero photo.
+const og = await getImage({ src: service.hero, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 80 });
+---
+
+<BaseLayout
+  title={service.seoTitle}
+  description={service.seoDescription}
+  crumbs={crumbs}
+  ogImage={og.src}
+  ogImageAlt={service.heroAlt}
+  schema={[
+    {
+      '@type': 'Service',
+      '@id': `${pageUrl}#service`,
+      name: service.title,
+      serviceType: service.title,
+      description: service.summary,
+      provider: { '@id': `${SITE_URL}/#organization` },
+      areaServed: { '@type': 'Country', name: 'India' },
+      url: pageUrl,
+      image: new URL(og.src, SITE_URL).href,
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: `${service.title} capabilities`,
+        itemListElement: service.capabilities.map((c) => ({
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: c.title, description: c.text },
+        })),
+      },
+    },
+  ]}
+>
+  <PageBanner
+    eyebrow={service.eyebrow}
+    title={service.title}
+    lead={service.summary}
+    image={service.hero}
+    alt={service.heroAlt}
+    crumbs={crumbs}
+  />
+
+  <!-- Description -->
+  <section class="section detail">
+    <div class="container detail__grid">
+      <div class="detail__copy reveal">
+        <p class="eyebrow">Service Overview</p>
+        <h2>About Our {service.shortTitle} Service</h2>
+        <div class="prose">
+          {service.description.map((p) => <p>{p}</p>)}
+        </div>
+        <div class="btn-group detail__actions">
+          <a href="/request-a-quote" class="btn btn--primary">Request a Quote <Icon name="arrow-right" class="arrow" /></a>
+          <a href="/contact" class="btn btn--outline">Talk to Our Team</a>
+        </div>
+      </div>
+      <div class="detail__media reveal" style="--d:120ms">
+        <Image src={service.detail} alt={service.detailAlt} widths={[480, 800, 1100]} sizes="(min-width: 1024px) 42vw, 92vw" quality={76} class="detail__img" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities -->
+  <section class="section bg-surface" aria-labelledby="capabilities-title">
+    <div class="container">
+      <SectionHead eyebrow="Key Capabilities" title={`What Our ${service.shortTitle} Service Covers`} />
+      <div class="grid grid--2 capability-grid">
+        {
+          service.capabilities.map((c, i) => (
+            <article class="capability reveal" style={`--d:${i * 80}ms`}>
+              <span class="capability__num">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{c.title}</h3>
+                <p>{c.text}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits -->
+  <section class="section bg-navy benefits" aria-labelledby="benefits-title">
+    <div class="container">
+      <SectionHead eyebrow="Customer Benefits" title="Why Businesses Choose This Service" align="center" />
+      <ul class="benefits__list">
+        {
+          service.benefits.map((b, i) => (
+            <li class="benefit reveal" style={`--d:${i * 90}ms`}>
+              <span class="icon-badge icon-badge--dark"><Icon name="check" /></span>
+              <h3>{b.title}</h3>
+              <p>{b.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Other services -->
+  <section class="section" aria-labelledby="other-title">
+    <div class="container">
+      <SectionHead eyebrow="Explore More" title="Related Freight Forwarding Services" align="split">
+        <a href="/services" class="text-link">All services <Icon name="arrow-right" /></a>
+      </SectionHead>
+      <ul class="related">
+        {
+          others.map((o, i) => (
+            <li class="reveal" style={`--d:${i * 80}ms`}>
+              <a href={`/services/${o.slug}`} class="related__card">
+                <Image src={o.card} alt={o.cardAlt} widths={[360, 560, 800]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 48vw, 92vw" quality={70} />
+                <span class="related__body">
+                  <span class="icon-badge"><Icon name={o.icon} /></span>
+                  <span>
+                    <strong>{o.title}</strong>
+                    <span>{o.summary}</span>
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand title={`Ready to Discuss ${service.shortTitle}?`} text="Share your shipment details and our team will propose a suitable solution." />
+</BaseLayout>
+
+<style>
+  .detail__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: 3rem 5rem;
+    align-items: center;
+  }
+  .detail__copy .prose {
+    margin-top: 1.5rem;
+  }
+  .detail__actions {
+    margin-top: 2rem;
+  }
+  .detail__media :global(.detail__img) {
+    width: 100%;
+    aspect-ratio: 4 / 4.4;
+    object-fit: cover;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+  }
+  .capability-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 720px) {
+    .capability-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .capability {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.75rem;
+    background: var(--surface-0);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    transition:
+      transform var(--dur) var(--ease-out),
+      box-shadow var(--dur) var(--ease-out);
+  }
+  .capability:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+  }
+  .capability__num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-2xl);
+    line-height: 1;
+    color: var(--teal-500);
+    letter-spacing: -0.03em;
+  }
+  .capability h3 {
+    font-size: var(--text-lg);
+  }
+  .capability p {
+    margin-top: 0.5rem;
+    font-size: var(--text-sm);
+    color: var(--ink-600);
+    line-height: 1.65;
+  }
+  .benefits__list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .benefit {
+    padding: 1.75rem;
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 0.04);
+    border: 1px solid rgb(255 255 255 / 0.1);
+  }
+  .benefit h3 {
+    margin-top: 1.1rem;
+    font-size: var(--text-lg);
+  }
+  .benefit p {
+    margin-top: 0.5rem;
+    font-size: var(--text-sm);
+    color: rgb(255 255 255 / 0.72);
+    line-height: 1.65;
+  }
+  .related {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .related__card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    color: inherit;
+    background: var(--surface-0);
+    transition:
+      transform var(--dur) var(--ease-out),
+      box-shadow var(--dur) var(--ease-out);
+  }
+  .related__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    color: inherit;
+  }
+  .related__card :global(img) {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+  .related__body {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+  .related__body strong {
+    display: block;
+    font-family: var(--font-display);
+    color: var(--ink-900);
+  }
+  .related__body strong + span {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: var(--text-sm);
+    color: var(--ink-600);
+    line-height: 1.55;
+  }
+  @media (max-width: 1024px) {
+    .detail__grid {
+      grid-template-columns: 1fr;
+    }
+    .detail__media {
+      max-width: 34rem;
+    }
+    .benefits__list,
+    .related {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .related {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

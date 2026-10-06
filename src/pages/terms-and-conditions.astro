@@ -1,0 +1,78 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { company, formattedAddress } from '../data/site';
+---
+
+<LegalLayout
+  title="Terms & Conditions"
+  description="Terms and Conditions governing the use of the Quality Shipping Services Pvt. Ltd. website."
+  updated="[Date to be confirmed]"
+>
+  <h2>1. Acceptance of Terms</h2>
+  <p>
+    By accessing or using this website, operated by {company.legalName} (“we”, “us”, “our”), you agree to be bound by
+    these Terms &amp; Conditions. If you do not agree, please do not use the website.
+  </p>
+
+  <h2>2. Purpose of the Website</h2>
+  <p>
+    This website provides general information about our freight forwarding and logistics services. It does not
+    constitute an offer, quotation or contract. Any quotation or service agreement will be provided separately and will
+    be subject to its own terms.
+  </p>
+
+  <h2>3. Enquiries and Quotations</h2>
+  <p>
+    Information submitted through the website's enquiry or contact forms is used to respond to your request. Submission
+    of an enquiry does not create a booking or a binding commitment by either party. Rates, transit times and service
+    availability are indicative until confirmed in writing.
+  </p>
+
+  <h2>4. Freight Forwarding Services</h2>
+  <p>
+    Freight forwarding services are provided under separate written terms, applicable carrier conditions of carriage and
+    international conventions as relevant. Nothing on this website modifies those terms.
+  </p>
+
+  <h2>5. Accuracy of Information</h2>
+  <p>
+    We make reasonable efforts to keep the content of this website accurate and up to date, but we do not warrant that it
+    is complete, accurate or free from error. References to ports, airports and trade lanes are for general information
+    and do not imply that we operate facilities at those locations.
+  </p>
+
+  <h2>6. Intellectual Property</h2>
+  <p>
+    The content of this website, including text, logos and graphics, is owned by or licensed to {company.legalName} and
+    is protected by applicable intellectual property laws. You may not reproduce or distribute it without our prior
+    written consent. Photography is used under licence from its respective owners.
+  </p>
+
+  <h2>7. Limitation of Liability</h2>
+  <p>
+    To the fullest extent permitted by law, we shall not be liable for any direct, indirect or consequential loss arising
+    from the use of, or inability to use, this website or reliance on its content.
+  </p>
+
+  <h2>8. Third-Party Links</h2>
+  <p>
+    This website may contain links to third-party websites for convenience. We have no control over, and accept no
+    responsibility for, the content or practices of those websites.
+  </p>
+
+  <h2>9. Governing Law</h2>
+  <p>
+    These Terms &amp; Conditions are governed by the laws of India. Any disputes shall be subject to the exclusive
+    jurisdiction of the courts of Bengaluru, Karnataka.
+  </p>
+
+  <h2>10. Changes</h2>
+  <p>We may revise these Terms &amp; Conditions at any time. Continued use of the website constitutes acceptance of the revised terms.</p>
+
+  <h2>11. Contact</h2>
+  <p>
+    {company.legalName}<br />
+    {formattedAddress.join(', ')}<br />
+    Email: <a href={`mailto:${company.email}`}>{company.email}</a>
+  </p>
+</LegalLayout>

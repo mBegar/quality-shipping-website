@@ -1,0 +1,78 @@
+---
+/**
+ * Shared status panel for the enquiry forms. `data-state` is set by
+ * src/scripts/forms.ts to `success` or `error`; the matching message is shown.
+ * The error state offers a pre-filled email as a working fallback so an
+ * enquiry is never lost.
+ */
+import Icon from './Icon.astro';
+import { company } from '../data/site';
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+<div class="form-status" id={id} role="status" aria-live="polite" data-visible="false" data-state="idle">
+  <div class="form-status__msg form-status__msg--success">
+    <span class="form-status__icon"><Icon name="check" /></span>
+    <div>
+      <strong>Thank you — your enquiry has been sent.</strong>
+      Our team has received your details at {company.email} and will respond within one working day.
+    </div>
+  </div>
+  <div class="form-status__msg form-status__msg--error">
+    <span class="form-status__icon"><Icon name="alert-circle" /></span>
+    <div>
+      <strong>We could not send your enquiry automatically.</strong>
+      <span class="form-status__text">
+        This may be a temporary connection issue. Please try again in a moment, or use the button below to send the same
+        details to{' '}
+        <a href={`mailto:${company.email}`}>{company.email}</a> — the message will be pre-filled with what you entered.
+      </span>
+      <a href={`mailto:${company.email}`} class="btn btn--navy btn--sm" data-mailto>
+        <Icon name="mail" /> Send Enquiry by Email
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-status__msg {
+    display: none;
+    gap: 0.9rem;
+    align-items: flex-start;
+  }
+  .form-status[data-state='success'] .form-status__msg--success,
+  .form-status[data-state='error'] .form-status__msg--error {
+    display: flex;
+  }
+  .form-status__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--teal-600);
+    color: #fff;
+  }
+  .form-status[data-state='error'] .form-status__icon {
+    background: #b4532a;
+  }
+  .form-status__icon :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .form-status[data-state='error'] {
+    background: #fff7f2;
+    border-color: #f0c9b5;
+  }
+  .form-status__text {
+    display: block;
+  }
+  .form-status .btn {
+    margin-top: 0.9rem;
+  }
+</style>

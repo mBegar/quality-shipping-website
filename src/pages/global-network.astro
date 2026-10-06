@@ -1,0 +1,262 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import SectionHead from '../components/SectionHead.astro';
+import GlobalNetworkSection from '../components/GlobalNetworkSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import containerShip from '../assets/photos/container-ship.jpg';
+import { seaports as gateways, airports, inlandDepots } from '../data/gateways';
+
+const title = 'Global Network & Indian Trade Gateways';
+const description =
+  'Indian seaports, airports and ICDs we route through — Nhava Sheva, Mundra, Chennai, Kolkata and more — plus the international trade lanes we serve.';
+const crumbs = [{ label: 'Global Network' }];
+
+const airInland = [
+  {
+    icon: 'plane',
+    title: 'International Airports',
+    text: 'Air cargo is coordinated through India’s major international airports, selected according to routing, schedule and the location of your cargo.',
+    items: airports.map((a) => `${a.name} (${a.code})`),
+  },
+  {
+    icon: 'warehouse',
+    title: 'Inland Container Depots (ICDs)',
+    text: 'For customers located away from the coast, ICDs provide inland customs clearance and rail-linked container movement to and from gateway ports.',
+    items: inlandDepots,
+  },
+];
+
+const regions = [
+  { name: 'Middle East', text: 'Gulf markets with frequent sea and air connections from India.' },
+  { name: 'South-East Asia', text: 'Singapore, Malaysia, Vietnam, Thailand and Indonesia trade lanes.' },
+  { name: 'East Asia', text: 'China, Japan, South Korea and Taiwan — major sourcing and export markets.' },
+  { name: 'Europe', text: 'North European and Mediterranean ports via established ocean services.' },
+  { name: 'North America', text: 'US and Canadian east- and west-coast gateways.' },
+  { name: 'Africa & Oceania', text: 'East and South African markets and Australian trade lanes.' },
+];
+---
+
+<BaseLayout title={title} description={description} crumbs={crumbs}>
+  <PageBanner
+    eyebrow="Global Network"
+    title="Connecting Indian Businesses to Global Markets"
+    lead="Through India's major sea, air and inland gateways and established international trade lanes, we coordinate cargo movements to and from markets around the world."
+    image={containerShip}
+    alt="Fully loaded container ship sailing across open sea"
+    crumbs={crumbs}
+  />
+
+  <GlobalNetworkSection linkToPage={false} />
+
+  <!-- Indian gateways -->
+  <section class="section">
+    <div class="container">
+      <SectionHead
+        eyebrow="Indian Trade Gateways"
+        title="Major Indian Ports We Route Through"
+        lead="Shipments are routed through the gateway best suited to your cargo's origin, destination and schedule. These are public ports and facilities — not company offices."
+      />
+      <ul class="gateways">
+        {
+          gateways.map((g, i) => (
+            <li class="gateway reveal" style={`--d:${i * 70}ms`}>
+              <span class="gateway__icon"><Icon name="anchor" /></span>
+              <div>
+                <h3>{g.name}</h3>
+                <p class="gateway__region">{g.region}</p>
+                <p>{g.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Air & inland -->
+  <section class="section bg-surface">
+    <div class="container air-inland">
+      <SectionHead eyebrow="Air & Inland Connectivity" title="Beyond the Seaports" />
+      <div class="grid grid--2">
+        {
+          airInland.map((a, i) => (
+            <article class="card air-inland__card reveal" style={`--d:${i * 90}ms`}>
+              <span class="icon-badge"><Icon name={a.icon} /></span>
+              <h3>{a.title}</h3>
+              <p>{a.text}</p>
+              <ul class="air-inland__list">
+                {a.items.map((item) => <li>{item}</li>)}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- International regions -->
+  <section class="section">
+    <div class="container">
+      <SectionHead
+        eyebrow="International Trade Lanes"
+        title="Markets We Help You Reach"
+        lead="Working with carriers and overseas service partners, we coordinate import and export shipments across the principal trade regions connected to India."
+        align="center"
+      />
+      <ul class="regions">
+        {
+          regions.map((r, i) => (
+            <li class="region reveal" style={`--d:${i * 60}ms`}>
+              <Icon name="globe" />
+              <div>
+                <h3>{r.name}</h3>
+                <p>{r.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="regions__note reveal">
+        Regions listed are indicative of common trade lanes served through our carrier and partner network. Service
+        availability for a specific origin–destination pair is confirmed at the time of quotation.
+      </p>
+    </div>
+  </section>
+
+  <CtaBand title="Shipping To or From India?" text="Tell us your origin and destination and we will propose a suitable routing." />
+</BaseLayout>
+
+<style>
+  .gateways {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .gateway {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    padding: 1.6rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface-0);
+    transition:
+      transform var(--dur) var(--ease-out),
+      box-shadow var(--dur) var(--ease-out);
+  }
+  .gateway:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+  }
+  .gateway__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--navy-800);
+    color: var(--teal-300);
+  }
+  .gateway__icon :global(svg) {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+  .gateway h3 {
+    font-size: var(--text-lg);
+  }
+  .gateway__region {
+    margin: 0.25rem 0 0.6rem;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal-600);
+  }
+  .gateway p:not(.gateway__region) {
+    font-size: var(--text-sm);
+    color: var(--ink-600);
+    line-height: 1.6;
+  }
+  .air-inland__card {
+    padding: 1.9rem;
+  }
+  .air-inland__card h3 {
+    margin-top: 1.25rem;
+    font-size: var(--text-xl);
+  }
+  .air-inland__card p {
+    margin-top: 0.6rem;
+    color: var(--ink-600);
+    line-height: 1.65;
+  }
+  .air-inland__list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .air-inland__list li {
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    background: var(--teal-50);
+    border: 1px solid #cfe7f0;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--navy-800);
+  }
+  .regions {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .region {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.4rem 1.5rem;
+    border-radius: var(--radius);
+    background: var(--surface-1);
+    border: 1px solid var(--line);
+  }
+  .region :global(svg) {
+    flex: none;
+    width: 1.4rem;
+    height: 1.4rem;
+    color: var(--teal-600);
+    margin-top: 0.15rem;
+  }
+  .region h3 {
+    font-size: var(--text-base);
+  }
+  .region p {
+    margin-top: 0.35rem;
+    font-size: var(--text-sm);
+    color: var(--ink-600);
+  }
+  .regions__note {
+    margin: 2rem auto 0;
+    max-width: 44rem;
+    text-align: center;
+    font-size: var(--text-xs);
+    color: var(--ink-500);
+  }
+  @media (max-width: 1024px) {
+    .gateways,
+    .regions {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 600px) {
+    .gateways,
+    .regions {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,116 @@
+---
+import Icon from './Icon.astro';
+
+const values = [
+  {
+    icon: 'users',
+    title: 'Customer-Focused Service',
+    text: 'Solutions tailored to each shipment and business requirement.',
+  },
+  {
+    icon: 'cog',
+    title: 'Operational Expertise',
+    text: 'Practical knowledge of freight forwarding and international shipping processes.',
+  },
+  {
+    icon: 'route',
+    title: 'Reliable Coordination',
+    text: 'Clear communication and careful shipment coordination.',
+  },
+  {
+    icon: 'message-circle',
+    title: 'Transparent Communication',
+    text: 'Timely updates and responsive support.',
+  },
+  {
+    icon: 'sliders',
+    title: 'Flexible Logistics Solutions',
+    text: 'Options suited to different cargo types and shipping needs.',
+  },
+  {
+    icon: 'handshake',
+    title: 'Long-Term Partnerships',
+    text: 'A relationship-driven approach to customer service.',
+  },
+];
+
+interface Props {
+  variant?: 'light' | 'dark';
+}
+const { variant = 'light' } = Astro.props;
+---
+
+<ul class:list={['values', `values--${variant}`]}>
+  {
+    values.map((v, i) => (
+      <li class="value reveal" style={`--d:${i * 70}ms`}>
+        <span class:list={['icon-badge', { 'icon-badge--dark': variant === 'dark' }]}>
+          <Icon name={v.icon} />
+        </span>
+        <div>
+          <h3>{v.title}</h3>
+          <p>{v.text}</p>
+        </div>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .values {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .value {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    padding: 1.9rem 1.75rem;
+    background: var(--surface-0);
+    transition: background-color var(--dur) var(--ease-out);
+  }
+  .value:hover {
+    background: var(--surface-1);
+  }
+  .value h3 {
+    font-size: var(--text-lg);
+  }
+  .value p {
+    margin-top: 0.5rem;
+    font-size: var(--text-sm);
+    color: var(--ink-600);
+    line-height: 1.6;
+  }
+  .values--dark {
+    background: rgb(255 255 255 / 0.08);
+    border-color: rgb(255 255 255 / 0.08);
+  }
+  .values--dark .value {
+    background: var(--navy-800);
+  }
+  .values--dark .value:hover {
+    background: var(--navy-700);
+  }
+  .values--dark h3 {
+    color: #fff;
+  }
+  .values--dark p {
+    color: rgb(255 255 255 / 0.72);
+  }
+  @media (max-width: 960px) {
+    .values {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 600px) {
+    .values {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

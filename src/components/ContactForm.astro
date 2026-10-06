@@ -1,0 +1,82 @@
+---
+import Icon from './Icon.astro';
+import FormStatus from './FormStatus.astro';
+import { company, FORM_ENDPOINT } from '../data/site';
+---
+
+<form class="contact-form" id="contact-form" novalidate data-form="contact" data-email={company.email} action={FORM_ENDPOINT} method="post">
+  <!-- Honeypot: hidden from people, bots that fill it are discarded by the mail relay. -->
+  <label class="hp" aria-hidden="true">Leave this field empty <input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label>
+  <div class="form-grid">
+    <div class="field">
+      <label for="c-name">Full Name <span class="req" aria-hidden="true">*</span></label>
+      <input class="input" id="c-name" name="Full Name" type="text" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="c-company">Company Name</label>
+      <input class="input" id="c-company" name="Company Name" type="text" autocomplete="organization" />
+    </div>
+    <div class="field">
+      <label for="c-email">Business Email <span class="req" aria-hidden="true">*</span></label>
+      <input class="input" id="c-email" name="Business Email" type="email" autocomplete="email" inputmode="email" required />
+    </div>
+    <div class="field">
+      <label for="c-phone">Phone Number</label>
+      <input class="input" id="c-phone" name="Phone Number" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91" />
+    </div>
+    <div class="field span-2">
+      <label for="c-subject">Subject <span class="req" aria-hidden="true">*</span></label>
+      <select class="select" id="c-subject" name="Subject" required>
+        <option value="" selected disabled>Select a topic</option>
+        <option>General enquiry</option>
+        <option>Ocean freight</option>
+        <option>Air freight</option>
+        <option>Import / export documentation</option>
+        <option>Project or special cargo</option>
+        <option>Partnership or agency enquiry</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="field span-2">
+      <label for="c-message">Message <span class="req" aria-hidden="true">*</span></label>
+      <textarea class="textarea" id="c-message" name="Message" required placeholder="How can we help?"></textarea>
+    </div>
+  </div>
+
+  <div class="form-footer">
+    <p class="form-note">
+      <Icon name="info" />
+      <span>
+        Fields marked <span class="req">*</span> are required. By sending this message you agree to our{' '}
+        <a href="/privacy-policy">Privacy Policy</a>.
+      </span>
+    </p>
+    <button type="submit" class="btn btn--primary btn--lg">
+      <span class="btn__label">Send Message</span><span class="btn__busy">Sending…</span> <Icon name="arrow-right" class="arrow" />
+    </button>
+  </div>
+
+  <FormStatus id="contact-status" />
+</form>
+
+<style>
+  .hp {
+    display: none;
+  }
+  .form-footer {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.75rem;
+  }
+  .form-footer .btn {
+    justify-self: start;
+  }
+  .form-note .req {
+    color: var(--teal-600);
+  }
+</style>
+
+<script>
+  import { bindEnquiryForm } from '../scripts/forms';
+  bindEnquiryForm('#contact-form', '#contact-status', 'Website Contact Enquiry');
+</script>

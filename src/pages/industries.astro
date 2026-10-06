@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import SectionHead from '../components/SectionHead.astro';
+import IndustryCard from '../components/IndustryCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { industries } from '../data/industries';
+import { services } from '../data/services';
+import warehouseRacks from '../assets/photos/warehouse-racks.jpg';
+
+const title = 'Industries We Serve';
+const description =
+  'Freight forwarding for manufacturing, engineering, automotive, consumer goods, electronics and retail businesses importing to and exporting from India.';
+const crumbs = [{ label: 'Industries' }];
+---
+
+<BaseLayout title={title} description={description} crumbs={crumbs}>
+  <PageBanner
+    eyebrow="Industries We Serve"
+    title="Freight Forwarding for the Sectors That Trade Globally"
+    lead="Different industries ship differently. We shape our coordination around the cargo, timing and documentation requirements of your sector."
+    image={warehouseRacks}
+    alt="Industrial warehouse racking filled with palletised goods"
+    crumbs={crumbs}
+  />
+
+  <section class="section">
+    <div class="container">
+      <SectionHead
+        eyebrow="Sector Experience"
+        title="Logistics Coordination Built Around Your Industry"
+        lead="From production inputs to finished goods, we coordinate international shipments for businesses across the following sectors."
+      />
+      <div class="grid grid--3">
+        {industries.map((ind, i) => <IndustryCard industry={ind} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-surface">
+    <div class="container fit">
+      <div class="fit__copy reveal">
+        <p class="eyebrow">Matching Mode to Cargo</p>
+        <h2>The Right Freight Service for Each Requirement</h2>
+        <p class="lead">
+          Within every industry, individual shipments vary. We help you choose between ocean FCL, ocean LCL and air
+          freight based on volume, urgency, value and cost — and coordinate documentation and clearance alongside.
+        </p>
+      </div>
+      <ul class="fit__services">
+        {
+          services.map((s, i) => (
+            <li class="reveal" style={`--d:${i * 80}ms`}>
+              <a href={`/services/${s.slug}`} class="fit__card">
+                <span class="icon-badge"><Icon name={s.icon} /></span>
+                <strong>{s.shortTitle}</strong>
+                <span>{s.summary}</span>
+                <span class="text-link">Learn more <Icon name="arrow-right" /></span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand title="Don't See Your Industry Listed?" text="We work with a wide range of trading businesses. Tell us about your cargo and we will advise on a suitable approach." />
+</BaseLayout>
+
+<style>
+  .fit {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 3rem 4rem;
+    align-items: start;
+  }
+  .fit__copy .lead {
+    margin-top: 1rem;
+  }
+  .fit__services {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .fit__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 100%;
+    padding: 1.5rem;
+    background: var(--surface-0);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: inherit;
+    transition:
+      transform var(--dur) var(--ease-out),
+      box-shadow var(--dur) var(--ease-out);
+  }
+  .fit__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    color: inherit;
+  }
+  .fit__card strong {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    color: var(--ink-900);
+    margin-top: 0.25rem;
+  }
+  .fit__card > span:not(.icon-badge):not(.text-link) {
+    font-size: var(--text-sm);
+    color: var(--ink-600);
+    line-height: 1.6;
+    flex: 1;
+  }
+  @media (max-width: 1024px) {
+    .fit {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .fit__services {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
