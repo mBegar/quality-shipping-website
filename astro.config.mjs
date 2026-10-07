@@ -1,7 +1,27 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
+import { copyFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
 import { SITE_URL } from './src/data/site.ts';
+
+/**
+ * The previous website advertised its sitemap at /sitemap.xml and that URL is
+ * still registered in Google Search Console. @astrojs/sitemap writes
+ * /sitemap-index.xml, so publish a copy under the legacy path as well.
+ * @returns {import('astro').AstroIntegration}
+ */
+function legacySitemapAlias() {
+  return {
+    name: 'legacy-sitemap-alias',
+    hooks: {
+      async 'astro:build:done'({ dir }) {
+        const out = fileURLToPath(dir);
+        await copyFile(`${out}/sitemap-index.xml`, `${out}/sitemap.xml`);
+      },
+    },
+  };
+}
 
 export default defineConfig({
   // Public URL used for canonical links, Open Graph tags and the sitemap.
@@ -32,5 +52,6 @@ export default defineConfig({
         return { ...item, priority: 0.7, changefreq: ChangeFreqEnum.MONTHLY };
       },
     }),
+    legacySitemapAlias(),
   ],
 });
